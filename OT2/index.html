@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="script.js"></script>
     <title>Document</title>
 </head>
 
 <body>
 
-    <div ia=app>
+    <div id = app>
         <h1>{{ titulo }}</h1>
 
         <!-- Se o usuário estiver autenticado, exibir mensagem de boas-vindas -- > -->
@@ -24,12 +23,12 @@
             <h2>Faça login</h2>
             <form @submit.prevent="login">
                 <label for="username">Usuário:</label>
-                <input type="text" id="username" v-model="" username required> <br> <br>
+                <input type="text" id="username" v-model="username" required> <br> <br>
 
                 <label for="password">Senha:</label>
                 <input type="password" id="password" v-model="password" required> <br><br>
 
-                <button type="submit">Entrar</button>
+                <button type="submit">Entrar</button> <button type="reset">Redefinir</button>
             </form>
 
             <!--  Mensagem de erro exibida com v-show -- > -->
@@ -39,26 +38,33 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     
-    <script>
-        var app = new Vue({
-    el: '#app',
-    data: {
-        titulo: 'Aplicação de Login',
-        autenticado: false,
-        usuario: {
-            nome: 'João'
-        },
+    <!-- ...existing code... -->
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            titulo: 'Aplicação de Login',
+            autenticado: false,
+            usuario: {
+                nome: ''
+            },
             username: "",
             password: "",
-            erro: false
-
+            erro: false,
+            // Adicione usuários manualmente aqui
+            usuarios: [
+                { nome: 'João', username: 'usuario', password: 'senha' },
+                { nome: 'Maria', username: 'maria', password: '1234' }
+            ]
         },
         methods: {
             login() {
-                // Simulação de login
-                if (this.username === 'usuario' && this.password === 'senha') {
+                // Verifica se existe usuário com username e password informados
+                const user = this.usuarios.find(u => u.username === this.username && u.password === this.password);
+                if (user) {
                     this.autenticado = true;
                     this.erro = false;
+                    this.usuario.nome = user.nome;
                 } else {
                     this.erro = true;
                 }
@@ -68,12 +74,10 @@
                 this.username = '';
                 this.password = '';
             }
-        },
-
+        }
     })
-        
-
-    </script>
+</script>
+<!-- ...existing code... -->
 
 </body>
 
