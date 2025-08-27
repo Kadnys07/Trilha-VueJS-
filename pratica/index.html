@@ -16,15 +16,20 @@
             <div class="card-body">
                 <h1 class="card-title text-center mb-4">Cadastro de Agenda</h1>
 
+                <p class="text-right font-weight-bold mb-2">
+                    Total de contatos: {{ contacts.length }}
+                </p>
                 <form class="form-row mb-4" @submit.prevent="addContact">
                     <div class="col-md-4 mb-2">
                         <input type="text" class="form-control" v-model="newContact.name" placeholder="Nome" required>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <input type="text" class="form-control" v-model="newContact.phone" placeholder="Telefone" required>
+                        <input type="text" class="form-control" v-model="newContact.phone" placeholder="Telefone"
+                            required>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <input type="email" class="form-control" v-model="newContact.email" placeholder="Email" required>
+                        <input type="email" class="form-control" v-model="newContact.email" placeholder="Email"
+                            required>
                     </div>
                     <div class="col-md-2 mb-2">
                         <button type="submit" class="btn btn-success btn-block">Adicionar</button>
@@ -34,13 +39,16 @@
                 <!-- Edição de contato -->
                 <form v-if="editIndex !== -1" class="form-row mb-4" @submit.prevent="updateContact">
                     <div class="col-md-4 mb-2">
-                        <input type="text" class="form-control" v-model="currentContact.name" placeholder="Nome" required>
+                        <input type="text" class="form-control" v-model="currentContact.name" placeholder="Nome"
+                            required>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <input type="text" class="form-control" v-model="currentContact.phone" placeholder="Telefone" required>
+                        <input type="text" class="form-control" v-model="currentContact.phone" placeholder="Telefone"
+                            required>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <input type="email" class="form-control" v-model="currentContact.email" placeholder="Email" required>
+                        <input type="email" class="form-control" v-model="currentContact.email" placeholder="Email"
+                            required>
                     </div>
                     <div class="col-md-2 mb-2">
                         <button type="submit" class="btn btn-warning btn-block">Salvar</button>
