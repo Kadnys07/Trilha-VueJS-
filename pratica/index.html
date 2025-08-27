@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda com Vue.JS</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+
+<body class="bg-light">
+    <div id="app" class="container mt-5">
+        <div class="card shadow">
+            <div class="card-body">
+                <h1 class="card-title text-center mb-4">Cadastro de Agenda</h1>
+
+                <form class="form-row mb-4" @submit.prevent="addContact">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" v-model="newContact.name" placeholder="Nome" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="text" class="form-control" v-model="newContact.phone" placeholder="Telefone" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="email" class="form-control" v-model="newContact.email" placeholder="Email" required>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="submit" class="btn btn-success btn-block">Adicionar</button>
+                    </div>
+                </form>
+
+                <!-- Edição de contato -->
+                <form v-if="editIndex !== -1" class="form-row mb-4" @submit.prevent="updateContact">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" v-model="currentContact.name" placeholder="Nome" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="text" class="form-control" v-model="currentContact.phone" placeholder="Telefone" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="email" class="form-control" v-model="currentContact.email" placeholder="Email" required>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="submit" class="btn btn-warning btn-block">Salvar</button>
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-hover bg-white">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(contact, index) in contacts" :key="index">
+                            <td>{{ contact.name }}</td>
+                            <td>{{ contact.phone }}</td>
+                            <td>{{ contact.email }}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm mr-2" @click="editContact(index)">Editar</button>
+                                <button class="btn btn-danger btn-sm" @click="deleteContact(index)">Deletar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                newContact: {
+                    name: '',
+                    phone: '',
+                    email: ''
+                },
+                contacts: [],
+                currentContact: { name: '', phone: '', email: '' },
+                editIndex: -1
+            },
+            methods: {
+                addContact() {
+                    if (this.newContact.name && this.newContact.phone && this.newContact.email) {
+                        this.contacts.push({ ...this.newContact });
+                        this.newContact = { name: '', phone: '', email: '' };
+                    }
+                },
+                editContact(index) {
+                    this.currentContact = { ...this.contacts[index] };
+                    this.editIndex = index;
+                },
+                updateContact() {
+                    this.$set(this.contacts, this.editIndex, this.currentContact);
+                    this.currentContact = { name: '', phone: '', email: '' };
+                    this.editIndex = -1;
+                },
+                deleteContact(index) {
+                    this.contacts.splice(index, 1);
+                    // Se deletar o contato que está sendo editado, fecha o formulário de edição
+                    if (this.editIndex === index) {
+                        this.currentContact = { name: '', phone: '', email: '' };
+                        this.editIndex = -1;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
